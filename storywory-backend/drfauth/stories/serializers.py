@@ -17,3 +17,6 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('id', 'owner', 'photo',
                   'text', 'location', 'posted_on',
                   'number_of_likes', )
+
+
+    

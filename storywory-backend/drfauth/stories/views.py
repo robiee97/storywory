@@ -4,6 +4,7 @@ from rest_framework import  generics, permissions
 from .permissions import  IsOwner
 from rest_framework.response import Response
 from rest_framework import status
+from .producer import produceData
 
 # Create your views here.
 class PostViewSet(generics.GenericAPIView):
@@ -14,12 +15,16 @@ class PostViewSet(generics.GenericAPIView):
         serializer= self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=self.request.user)
+        #event produced to kafka
+        produceData('Addpost',serializer.data)
+        
         return Response(serializer.data,status=status.HTTP_201_CREATED)
 
     
 #open API
 class LikePostView(generics.GenericAPIView):   
-    def get(self, request, post_id):
+    
+    def post(self, request,post_id):
         post = Post.objects.get(pk=post_id)
         user = self.request.user
         if user.is_authenticated:
