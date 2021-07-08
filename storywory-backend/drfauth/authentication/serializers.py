@@ -5,6 +5,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from .models import User
 from django.contrib import auth
 
+from stories.models import Post
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -15,12 +16,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password']
+        fields = ['email', 'username', 'fullname', 'password', ]
 
     def validate(self, attrs):
         email = attrs.get('email', '')
         username = attrs.get('username', '')
-
+        fullname=attrs.get('fullname','')
+        
         if not username.isalnum():
             raise serializers.ValidationError(
                 self.default_error_messages)
@@ -65,4 +67,30 @@ class LoginSerializer(serializers.ModelSerializer):
             'username': user.username,
             'tokens': user.tokens(),
         }
-        return super().validate(attrs)
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'fullname', 'bio', 'profile_pic']
+        
+    def update(self, instance, validated_data):
+        user = super().update(instance, validated_data)
+        user.save()
+        return user
+
+
+class UserPostsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id','photo', 'text', 'location', 'number_of_likes', 'posted_on')
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    user_posts = serializers.SerializerMethodField('populatepost')
+    class Meta:
+        model = User
+        fields = ('username', 'fullname', 'bio', 'profile_pic', 'user_posts')
+
+    def populatepost(self, obj):
+        serializer = UserPostsSerializer(Post.objects.filter(owner=obj), many=True)
+        return serializer.data

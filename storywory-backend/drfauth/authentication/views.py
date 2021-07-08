@@ -1,6 +1,6 @@
 from logging import raiseExceptions
 from rest_framework import generics, status, views
-from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer
+from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer, UserInfoSerializer, UserProfileSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
@@ -13,6 +13,8 @@ from drf_yasg import openapi
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import Util
+from rest_framework import permissions
+
 
 class RegisterView(generics.GenericAPIView):
 
@@ -32,7 +34,7 @@ class RegisterView(generics.GenericAPIView):
         relativeLink=reverse('email-verify')
         absurl="http://"+current_site+relativeLink+"?token="+str(token)
         
-        email_body='Hi '+user.username+" please verify your email using below link \n" + absurl
+        email_body='Hi '+user.fullname+" please verify your email using below link \n" + absurl
         data={'email_body':email_body, 'to_email':user.email, 'email_subject':'verify your Email'}
 
         Util.send_email(data)
@@ -69,3 +71,19 @@ class LoginApiView(generics.GenericAPIView):
         serializer=self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class EditProfileView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserInfoSerializer
+    permission_classes =(permissions.IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
+
+#open to all API
+class GetProfileView(generics.RetrieveAPIView):
+    lookup_field = 'username'
+    queryset = User.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = (permissions.AllowAny,)
