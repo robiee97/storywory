@@ -5,6 +5,7 @@ from .permissions import  IsOwner
 from rest_framework.response import Response
 from rest_framework import status
 from .producer import produceData
+import requests
 
 # Create your views here.
 class PostViewSet(generics.GenericAPIView):
@@ -27,14 +28,18 @@ class LikePostView(generics.GenericAPIView):
     def post(self, request,post_id):
         post = Post.objects.get(pk=post_id)
         user = self.request.user
+        
         if user.is_authenticated:
             if user in post.likes.all():
                 like = False
                 post.likes.remove(user)
+                #dislike api call
+                requests.post('http://localhost:8080/post/dislike/'+post_id)
+                return Response(like)
             else:
                 like = True
                 post.likes.add(user)
-        data = {
-            'like': like
-        }
-        return Response(data)
+                #like api call
+                requests.post('http://localhost:8080/post/like/'+post_id)
+                return Response(like)
+        return Response('Not authenticated',status=status.HTTP_400_BAD_REQUEST)

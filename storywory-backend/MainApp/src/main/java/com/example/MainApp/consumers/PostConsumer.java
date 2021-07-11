@@ -18,21 +18,6 @@ public class PostConsumer {
 
     @KafkaListener(topics = {"Addpost"},groupId = "myId",containerFactory ="postKafkaListenerContainerFactory")
     public void listen(PostDto postDto){
-//        if(productRepository.existsById(productDto.getId())){
-//            productService.update(productDto,productDto.getId());
-//        }else{
-//            productService.create(productDto);
-//        }
         postService.savePost(postDto);
     }
-//    @KafkaListener(topics = {"product_deleted"},groupId = "myId",containerFactory = "kafkaListenerContainerFactory")
-//    public void listen(String data){
-//        Long id=Long.parseLong(data.substring(1,data.length()-1));
-//        if(productRepository.existsById(id)){
-//            productService.delete(id);
-//        }else{
-//            System.out.println("Product Not found");
-//        }
-//    }
-
 }
