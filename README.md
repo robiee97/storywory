@@ -1,7 +1,7 @@
 # StoryWory
 Short Video app, where user can register,login,logout. Post short videos, like/dislike them. watch other posts, like/dislike them.
 
-## Backend API
+## Backend
 Microservices based backend Application. Authentication/User Profile app using Python Django RF & MySQL and Stories/posts app using Spring boot & MongoDB.
 used Apache Kafka as Event Bus which shares data between both apps through consumers and producers. Swagger UI docs for DRF app.
 
