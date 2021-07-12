@@ -38,6 +38,6 @@ used Apache Kafka as Event Bus which shares data between both apps using consume
 ```
 ## Working of APIs
 user & Profile APIs
-![user & profile](https://github.com/[robiee97]/[storywory]/screenshots/User&profileApis.jpg?raw=true)
+![user & profile](https://github.com/robiee97/storywory/blob/main/screenshots/User&profileApis.JPG)
 Post APIs
-![post](https://github.com/[robiee97]/[storywory]/screenshots/PostApis.jpg?raw=true)
+![post](https://github.com/robiee97/storywory/blob/main/screenshots/PostApis.JPG)
