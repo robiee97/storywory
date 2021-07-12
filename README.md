@@ -1,9 +1,9 @@
 # StoryWory
-short video app 
+Short Video app, where user can register,login,logout. Post short videos, like/dislike them. watch other posts, like/dislike them.
 
 ## Backend API
 Microservices based backend Application. Authentication/User Profile app using Python Django RF & MySQL and Stories/posts app using Spring boot & MongoDB.
-used Apache Kafka as Event Bus which shares data between both apps using consumers and producers.Swagger UI docs for DRF app.
+used Apache Kafka as Event Bus which shares data between both apps through consumers and producers. Swagger UI docs for DRF app.
 
 ## Features (Django RF)
 ### User APIs
@@ -61,10 +61,5 @@ Logout REQ ![](https://github.com/robiee97/storywory/blob/main/screenshots/logou
 GET ALL Posts ![](https://github.com/robiee97/storywory/blob/main/screenshots/getAllpost.JPG)
 GET POSTs By Keyword ![](https://github.com/robiee97/storywory/blob/main/screenshots/getpostbyloc.JPG)
 
-
-
-
-
-
-
-
+## FrontEnd (Angular)
+...
